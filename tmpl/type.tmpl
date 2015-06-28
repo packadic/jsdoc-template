@@ -1,0 +1,28 @@
+<?js
+var typeToColorName = function(type){
+	var map = {
+		string: 'teal',
+		number: 'blue',
+		object: 'purple',
+		function: 'yellow-dark',
+		boolean: 'amber',
+		array: 'deep-orange-dark'
+	}
+	var def = 'blue-grey';
+	type = type.toLowerCase();
+	if(typeof(map[type]) !== 'undefined'){
+		return map[type];
+	} else {
+		return def;
+	}
+}
+?>
+<?js
+    var data = obj;
+    var self = this;
+    data.forEach(function(name, i) { ?>
+<span class="label <?js= typeToColorName(name) ?>"><?js= self.linkto(name, self.htmlsafe(name)) ?></span>
+
+
+<?js if (i < data.length-1) { ?>|<?js } ?>
+<?js }); ?>

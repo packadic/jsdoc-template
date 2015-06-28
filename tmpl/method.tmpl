@@ -1,0 +1,219 @@
+<?js
+var data = obj;
+var self = this;
+?>
+<?js
+var dbgStr = '';
+var dbgLvl = '';
+var dbgReadProp = function(val) {
+    if (Object.prototype.toString.call(val) === '[object Object]') {
+        for (var propertyName in val) {
+            if (val.hasOwnProperty(propertyName)) {
+                dbgStr += dbgLvl + propertyName + ':\n\t';
+                dbgLvl += '  ';
+                dbgReadProp(val[propertyName]);
+            }
+        }
+    }
+    else {
+        dbgStr += dbgLvl + val + '\n';
+        dbgLvl = dbgLvl.substring(0, dbgLvl.length - 2);
+    }
+}
+function dbgOut(){
+    dbgStr = '';
+    var args = Array.prototype.slice.call(arguments);
+    args.forEach(function(arg){
+        dbgReadProp(arg);
+    });
+    return dbgStr;
+}
+
+?>
+<pre class="hljs hide"><code><?js= JSON.stringify(this, null, 4) ?></code></pre>
+<pre class="hljs hide"><code><?js= JSON.stringify(data, null, 4) ?></code></pre>
+<?js if (data.kind !== 'module') { ?>
+    <?js if (data.kind === 'class' && data.classdesc) { ?>
+    <h2>Constructor</h2>
+    <?js } ?>
+
+    <!--<h4 class="box-heading" id="<?js= id ?>">-->
+    <blockquote class="fn-name" id="<?js= id ?>">
+
+        <small class="text-muted"><?js= data.attribs ?></small>
+        <?js= name ?>
+        <span class="text-grey"><?js= (data.signature || '') ?></span>
+    </blockquote>
+
+
+
+    <?js if (data.summary) { ?>
+    <p class="summary"><?js= summary ?></p>
+    <?js } ?>
+<?js } ?>
+
+<?js if(['module', 'class', 'mixin', 'global'].indexOf(data.kind) !== -1){ ?>
+<div class="row">
+    <div class="col-md-12">
+        <?js= this.partial('details.tmpl', data) ?>
+    </div>
+</div>
+<?js } ?>
+<div class="row">
+    <div class="col-md-6">
+
+
+        <table class="table table-condensed">
+            <tbody>
+                <?js if (data.kind !== 'module' && data.description) { ?>
+                <tr><td><strong>Description:</strong></td>
+                <td><?js= data.description ?></td></tr>
+                <?js } ?>
+
+                <?js if (data.augments && data.alias && data.alias.indexOf('module:') === 0) { ?>
+                <tr>
+                    <td><strong>Extends</strong></td>
+                    <td><?js= self.partial('augments.tmpl', data) ?></td>
+                </tr>
+                <?js } ?>
+                <?js if (data.meta && self.outputSourceFiles) {?>
+                <tr>
+                    <td><strong>Source</strong></td>
+                    <td>
+                    <?js= self.linkto(meta.shortpath) ?>, <?js= self.linkto(meta.shortpath, 'line ' + meta.lineno, null, 'line' + meta.lineno) ?>    
+                    </td>
+                </tr>
+                <?js } ?>
+
+                <?js if (data.returns && returns.length) { ?>
+                <tr>
+                    <td><strong>Returns</strong></td>
+                    <td>
+                        <?js if (returns.length > 1) { ?>
+                        <ul>
+                        <?js returns.forEach(function(r) { ?>
+                            <li><?js= self.partial('returns.tmpl', r) ?></li>
+                        <?js }); ?>
+                        </ul>
+                        <?js } else { ?>
+                            <?js returns.forEach(function(r) { ?>
+                                <?js= self.partial('returns.tmpl', r) ?>
+                            <?js }); ?>
+                        <?js } ?>
+                    </td>
+                </tr>
+                <?js } ?>
+        
+
+                <?js if (data.tutorials && tutorials.length) {?>
+                <tr><td><strong>Tutorials</strong></td>
+                    <td> <ul>
+                        <?js tutorials.forEach(function(t) { ?>
+                            <li><?js= self.tutoriallink(t) ?></li>
+                        <?js }); ?>
+                    </ul></td>
+                </tr>
+                <?js } ?>
+
+                <?js if (data.see && see.length) {?>
+                <tr><td><strong>See</strong></td>
+                    <td><ul>
+                        <?js see.forEach(function(s) { ?>
+                            <li><?js= self.linkto(s) ?></li>
+                        <?js }); ?>
+                    </ul></td>
+                </tr>
+                <?js } ?>
+                
+                <?js if (data.todo && todo.length) {?>
+                <tr><td><strong>Todo</strong></td>
+                    <td><ul>
+                        <?js todo.forEach(function(t) { ?>
+                            <li><?js= t ?></li>
+                        <?js }); ?>
+                    </ul></td>
+                </tr>
+                <?js } ?>
+
+
+                <?js if (kind === 'event' && data.type && data.type.names) {?>
+                <tr><td><strong>Type:</strong></td>
+                <td><ul><li>
+                    <?js= self.partial('type.tmpl', data.type.names) ?>
+                </li></ul></td></tr>
+                <?js } ?>
+
+                <?js if (data['this']) { ?>
+                <tr><td><strong>This:</strong></td>
+                <td><ul><li><?js= this.linkto(data['this'], data['this']) ?></li></ul></td></tr>
+                <?js } ?>
+
+
+
+                <?js if (data.kind !== 'module' && data.requires && data.requires.length) { ?>
+                <tr><td><strong>Requires:</strong></td>
+                <td><ul><?js data.requires.forEach(function(r) { ?>
+                    <li><?js= self.linkto(r) ?></li>
+                    <?js }); ?></ul></td></tr>
+                <?js } ?>
+
+                <?js if (data.fires && fires.length) { ?>
+                <tr><td><strong>Fires:</strong></td>
+                <td><ul><?js fires.forEach(function(f) { ?>
+                    <li><?js= self.linkto(f) ?></li>
+                    <?js }); ?></ul></td></tr>
+                <?js } ?>
+
+                <?js if (data.listens && listens.length) { ?>
+                <tr><td><strong>Listens to Events:</strong></td>
+                <td><ul><?js listens.forEach(function(f) { ?>
+                    <li><?js= self.linkto(f) ?></li>
+                    <?js }); ?></ul></td></tr>
+                <?js } ?>
+
+                <?js if (data.listeners && listeners.length) { ?>
+                <tr><td><strong>Listeners of This Event:</strong></td>
+                <td><ul><?js listeners.forEach(function(f) { ?>
+                    <li><?js= self.linkto(f) ?></li>
+                    <?js }); ?></ul></td></tr>
+                <?js } ?>
+
+                <?js if (data.exceptions && exceptions.length) { ?>
+                <tr><td><strong>Throws:</strong></td>
+                <td>
+                <?js if (exceptions.length > 1) { ?>
+                    <ul>
+                        <?js exceptions.forEach(function(r) { ?>
+                            <li><?js= self.partial('exceptions.tmpl', r) ?></li>
+                        <?js }); ?>
+                    </ul>
+                <?js } else { ?>
+
+                    <?js exceptions.forEach(function(r) { ?>
+                        <?js= self.partial('exceptions.tmpl', r) ?>
+                    <?js }); ?>
+                <?js } ?>
+                </td></tr>
+                <?js } ?>
+
+
+            </tbody>
+        </table>
+
+
+    </div>
+    <div class="col-md-6">
+
+        <?js if (data.params && params.length) { ?>
+        <tr><td><strong>Parameters:</strong></td>
+		<td>
+        <?js= this.partial('params.tmpl', params) ?>
+        <?js } ?>
+    </div>
+</div>
+
+
+<?js if (data.examples && examples.length) { ?>
+    <h5>Example<?js= examples.length > 1? 's':'' ?></h5>
+    <?js= this.partial('examples.tmpl', examples) ?>
+<?js } ?>

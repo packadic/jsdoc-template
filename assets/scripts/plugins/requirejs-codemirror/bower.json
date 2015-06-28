@@ -1,0 +1,12 @@
+{
+  "name": "requirejs-codemirror",
+  "version": "0.0.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "CodeMirror": "marijnh/CodeMirror#~4.0.3"
+  }
+}

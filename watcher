@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+
+function jsdoc() {
+    watchdir=/home/radic/jsdoc-template/tmpl
+    execdir=/home/radic/theme
+    watchfiles="${watchdir}/*.tmpl"
+    cd $watchdir
+    while res=$(inotifywait -e modify $watchfiles --format %f .); do
+        cd $execdir
+        npm run-script jsdoc
+        cd $watchdir
+    done
+}
+
+
+$*

@@ -1,0 +1,37 @@
+{
+  "name": "twbuttons",
+  "version": "0.0.3",
+  "authors": [
+    "onokumus <onokumus@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onokumus/twbuttons.git"
+  },
+  "description": "alexwolfe/Buttons for Twitter Bootstrap 3",
+  "main": "dist/twbuttons.css",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "buttons",
+    "less",
+    "css",
+    "css buttons",
+    "less buttons",
+    "bootstrap"
+  ],
+  "license": "MIT",  
+  "homepage": "https://github.com/onokumus/twbuttons",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "bootstrap": "~3.2.0"
+  }
+}

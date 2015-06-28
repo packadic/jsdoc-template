@@ -1,0 +1,28 @@
+<?js
+var dbgStr = '';
+var dbgLvl = '';
+var dbgReadProp = function(val) {
+    if (Object.prototype.toString.call(val) === '[object Object]') {
+        for (var propertyName in val) {
+            if (val.hasOwnProperty(propertyName)) {
+                dbgStr += dbgLvl + propertyName + ':';
+                dbgLvl += '  ';
+                dbgReadProp(val[propertyName]);
+            }
+        }
+    }
+    else {
+        dbgStr += dbgLvl + val;
+        dbgLvl = dbgLvl.substring(0, dbgLvl.length - 2);
+    }
+}
+function dbgOut(){
+    dbgStr = '';
+    var args = Array.prototype.slice.call(arguments);
+    args.forEach(function(arg){
+        dbgReadProp(arg);
+    });
+    return dbgStr;
+}
+
+?>
