@@ -1,19 +1,12 @@
-<section>
-
-<header>
-    <?js if (children.length > 0) { ?>
-    <ul><?js
-        var self = this;
-        children.forEach(function(t) { ?>
-        <li><?js= self.tutoriallink(t.name) ?></li>
-    <?js }); ?></ul>
-    <?js } ?>
-
-    <h2><?js= header ?></h2>
-</header>
-
-<article>
-    <?js= content ?>
-</article>
-
-</section>
+<div class="row">
+	<div class="col-md-12">
+		<div class="box box-style-light">
+			<header>
+				<h3><?js= header ?></h3>
+			</header>
+			<section>
+    			<?js= content.replace(/<h1>.*<\/h1>/, '') ?>
+			</section>
+		</div>
+	</div>
+</div>

@@ -287,7 +287,7 @@ function attachModuleSymbols(doclets, modules) {
     });
 }
 
-function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
+function buildMemberNav(items, itemHeading, itemsSeen, linktoFn, icon) {
     var nav = '';
 
     if (items.length) {
@@ -321,7 +321,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
         if (itemsNav !== '') {
           //  nav += '<h3>' + itemHeading + '</h3><ul>' + itemsNav + '</ul>';
-            nav += '<li><a href="javascript:;" class="no-icon"><span class="title">' + itemHeading + '</span><span class="arrow"></span></a>';
+            nav += '<li><a href="javascript:;"><i class="fa ' + icon + '"></i><span class="title">' + itemHeading + '</span><span class="arrow"></span></a>';
             nav += '<ul class="sub-menu">' + itemsNav + '</ul></li>';
         }
     }
@@ -357,14 +357,14 @@ function buildNav(members) {
     var seen = {};
     var seenTutorials = {};
 
-    nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
-    nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
-    nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
-    nav += buildMemberNav(members.events, 'Events', seen, linkto);
-    nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
-    nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
-    nav += buildMemberNav(members.tutorials, 'Tutorials', seenTutorials, linktoTutorial);
-    nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
+    nav += buildMemberNav(members.classes, 'Classes', seen, linkto, 'fa-mortar-board');
+    nav += buildMemberNav(members.modules, 'Modules', {}, linkto, 'fa-puzzle-piece');
+    nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal, 'fa-tty');
+    nav += buildMemberNav(members.events, 'Events', seen, linkto, 'fa-bolt');
+    nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto, 'fa-cc');
+    nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto, 'fa-random');
+    nav += buildMemberNav(members.tutorials, 'Tutorials', seenTutorials, linktoTutorial, 'fa-lightbulb-o');
+    nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto, 'fa-eject');
 
     if (members.globals.length) {
         var globalNav = '';
@@ -560,8 +560,8 @@ exports.publish = function(taffyData, opts, tutorials) {
     members.tutorials = tutorials.children;
 
     // output pretty-printed source files by default
-    var outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false 
-        ? true 
+    var outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false
+        ? true
         : false;
 
     // add template helpers
@@ -581,8 +581,8 @@ exports.publish = function(taffyData, opts, tutorials) {
         generateSourceFiles(sourceFiles, opts.encoding);
     }
 
-    if (members.globals.length) { 
-        generate('', 'Global', [{kind: 'globalobj'}], globalUrl); 
+    if (members.globals.length) {
+        generate('', 'Global', [{kind: 'globalobj'}], globalUrl);
     }
 
     // index page displays information from package.json and lists files
@@ -659,6 +659,6 @@ exports.publish = function(taffyData, opts, tutorials) {
             saveChildren(child);
         });
     }
-    
+
     saveChildren(tutorials);
 };

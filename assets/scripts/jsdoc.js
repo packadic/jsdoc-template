@@ -23,6 +23,21 @@
                 var $code = $(this);
                 $code.html(highlighter.HJS.highlightAuto($code.html()).value);
             });
+            $('pre.prettyprint').removeClass('prettyprint').addClass('hljs').find('code').each(function(){
+                var $code = $(this);
+
+                $.each($code.parent()[0].classList, function(i, className){
+                    if(className.indexOf("lang-") !== -1){
+                        var lang = className.replace('lang-', '');
+                        if(lang === 'sh') lang = 'bash';
+                        if(highlighter.HJS.listLanguages().indexOf(lang) === -1){
+                            return console.warn('Could not load language: ' + lang);
+                        }
+                        var newContent = highlighter.HJS.highlight(lang, $code.html()).value;
+                        $code.html(newContent);
+                    }
+                });
+            });
         });
     }).onStart(function () {
     }).onStarted(function () {

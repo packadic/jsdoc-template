@@ -16,6 +16,7 @@
 </div>
 <!--section#top-->
 <section id="top" class="navbar navbar-fixed-top">
+
     <!--header.top-->
     <header class="top">
         <div class="menu-toggler sidebar-toggler"><i class="fa fa-long-arrow-left"></i></div>
@@ -30,6 +31,7 @@
 <div class="clearfix"></div>
 <!--#page-->
 <section id="page">
+
     <!--section#side-->
     <div class="sidebar-wrapper">
         <!--section#side aside-->
@@ -45,15 +47,16 @@
         <!--main-->
         <main>
             <header class="content">
+                <?js if (obj.kind !== 'mainpage' && (obj.kind !== 'package')) { ?>
                 <div class="page-title pull-left">
-                    <?js if (title != 'Home') { ?>
                     <h1 class="page-title"><?js= title ?></h1>
-                    <?js } ?>
-
                 </div>
+                <?js } ?>
             </header>
             <div class="content">
                 <?js= content ?>
+
+
             </div>
         </main>
     </div>
