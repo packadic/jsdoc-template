@@ -27,6 +27,6 @@ radic.phar.pubkey
 /radic/cthemes
 /build
 /_test
-
+/lib
 .idea
 /secret.js
